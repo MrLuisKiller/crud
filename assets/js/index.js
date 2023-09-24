@@ -1,11 +1,4 @@
-let cardList = [
-    {
-        headline: 'Luis Valenzuela',
-        cardNumber: '4444190119984444',
-        dateExpiry: '01/98',
-        cvv: '123'
-    }
-]
+let cardList = JSON.parse(localStorage.getItem('cardList')) || []
 let index = null
 
 const tr = (card, index) => `
@@ -83,6 +76,7 @@ form.addEventListener('submit', e => {
         cardList.push(card)
     else
         cardList[index] = card
+    localStorage.setItem('cardList', JSON.stringify(cardList))
     reset()
     showCard()
     infoCard.headline.focus()
@@ -103,5 +97,6 @@ const editCard = i => {
 
 const deleteCard = i => {
     cardList.splice(i, 1)
+    localStorage.setItem('cardList', JSON.stringify(cardList))
     showCard()
 }
