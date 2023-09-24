@@ -54,7 +54,10 @@ const validate = id => {
 }
 
 const reset = () => {
-    Object.keys(icons).forEach(key => icons[key].classList.remove('text-success'))
+    Object.keys(icons).forEach(key => {
+        icons[key].classList.remove('text-success')
+        icons[key].classList.remove('text-danger')
+    })
     form.reset()
     index = null
     title.innerHTML = 'AGREGAR'
