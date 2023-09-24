@@ -1,0 +1,47 @@
+body {
+    background: #8E0E00;
+    background: linear-gradient(to right, #1F1C18, #8E0E00);
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);
+}
+
+.navbar-collapse {
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bi-credit-card-2-front {
+    color: black;
+    font-size: 40px;
+}
+
+.social-net a {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    margin: 10px;
+    border: 2px solid black;
+    border-radius: 50%;
+    transition: all .2s ease-in;
+}
+
+.social-net i {
+    color: black;
+    font-size: 1.5rem;
+    transition: all .2s ease-in;
+}
+
+.social-net a:hover {
+    background: black;
+    border: 2px solid rgb(13, 110, 253);
+}
+
+.social-net a:hover i { color: white; }
+
+.copyright {
+    font-size: 15px;
+    color: #AEAEAE;
+    padding: 10px;
+}
