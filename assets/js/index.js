@@ -72,13 +72,19 @@ form.addEventListener('submit', e => {
         dateExpiry: infoCard.dateExpiry.value,
         cvv: infoCard.cvv.value
     }
-    if (index === null) 
+    if (index === null) {
         cardList.push(card)
-    else
+        toastObject.toastStyle = 'success'
+        toastObject.toastMessage = 'Tarjeta agregada con Exito!!'
+    } else {
         cardList[index] = card
+        toastObject.toastStyle = 'info'
+        toastObject.toastMessage = 'Tarjeta actualizada con Exito!!'
+    }
     localStorage.setItem('cardList', JSON.stringify(cardList))
     reset()
     showCard()
+    showToast()
     infoCard.headline.focus()
 })
 
@@ -99,4 +105,7 @@ const deleteCard = i => {
     cardList.splice(i, 1)
     localStorage.setItem('cardList', JSON.stringify(cardList))
     showCard()
+    toastObject.toastStyle = 'danger'
+    toastObject.toastMessage = 'Tarjeta eliminada con Exito!!'
+    showToast()
 }
