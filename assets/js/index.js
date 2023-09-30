@@ -95,7 +95,6 @@ cleanbtn.addEventListener('click', () => reset())
 
 const editCard = i => {
     index = i
-    cleanbtn.disabled = false
     title.innerHTML = 'EDITAR'
     infoCard.headline.value = cardList[i].headline
     infoCard.cardNumber.value = cardList[i].cardNumber
