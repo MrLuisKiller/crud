@@ -38,8 +38,8 @@ const erasebtn = document.getElementById('erasebtn')
 
 const showCard = () => {
     document.getElementById('cards').innerHTML = cardList.map((card, index) => tr(card, index)).join('')
-    erase = cardList.length > 0 ? false : true
-    erasebtn.disabled = erase
+    erase = cardList.length > 0
+    erasebtn.disabled = !erase
 }
 showCard()
 
@@ -119,10 +119,12 @@ const deleteCard = i => {
 }
 
 erasebtn.addEventListener('click', () => {
-    localStorage.clear()
-    cardList = []
-    showCard()
-    toastObject.toastStyle = 'danger'
-    toastObject.toastMessage = 'Se borraron todas las tarjetas con Exito!!'
-    showToast()
+    if (erase) {
+        localStorage.clear()
+        cardList = []
+        showCard()
+        toastObject.toastStyle = 'danger'
+        toastObject.toastMessage = 'Se borraron todas las tarjetas con Exito!!'
+        showToast()
+    }
 })
