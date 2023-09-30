@@ -1,5 +1,6 @@
 let cardList = JSON.parse(localStorage.getItem('cardList')) || []
 let index = null
+let erase = false
 
 const tr = (card, index) => `
     <tr>
@@ -33,8 +34,13 @@ const title = document.getElementById('title')
 const form = document.getElementById('form')
 const submitbtn = document.getElementById('submitbtn')
 const cleanbtn = document.getElementById('cleanbtn')
+const erasebtn = document.getElementById('erasebtn')
 
-const showCard = () => document.getElementById('cards').innerHTML = cardList.map((card, index) => tr(card, index)).join('')
+const showCard = () => {
+    document.getElementById('cards').innerHTML = cardList.map((card, index) => tr(card, index)).join('')
+    erase = cardList.length > 0 ? false : true
+    erasebtn.disabled = erase
+}
 showCard()
 
 const valid = icon => {
@@ -111,3 +117,12 @@ const deleteCard = i => {
     toastObject.toastMessage = 'Tarjeta eliminada con Exito!!'
     showToast()
 }
+
+erasebtn.addEventListener('click', () => {
+    localStorage.clear()
+    cardList = []
+    showCard()
+    toastObject.toastStyle = 'danger'
+    toastObject.toastMessage = 'Se borraron todas las tarjetas con Exito!!'
+    showToast()
+})
