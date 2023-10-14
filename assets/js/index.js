@@ -1,6 +1,13 @@
 let cardList = JSON.parse(localStorage.getItem('cardList')) || []
 let index = null
-let erase = false
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true
+})
 
 const tr = (card, index) => `
     <tr>
@@ -34,12 +41,12 @@ const title = document.getElementById('title')
 const form = document.getElementById('form')
 const submitbtn = document.getElementById('submitbtn')
 const cleanbtn = document.getElementById('cleanbtn')
+const cards = document.getElementById('cards')
 const erasebtn = document.getElementById('erasebtn')
 
 const showCard = () => {
-    document.getElementById('cards').innerHTML = cardList.map((card, index) => tr(card, index)).join('')
-    erase = cardList.length > 0
-    erasebtn.disabled = !erase
+    cards.innerHTML = cardList.map((card, index) => tr(card, index)).join('')
+    erasebtn.disabled = !cardList.length > 0
 }
 showCard()
 
@@ -55,7 +62,7 @@ const invalid = icon => {
 
 const validate = id => {
     infoCard[id].validity.valid ? valid(icons[id]) : invalid(icons[id])
-    submitbtn.disabled = infoCard.headline.validity.valid && infoCard.cardNumber.validity.valid && infoCard.dateExpiry.validity.valid && infoCard.cvv.validity.valid ? false : true
+    submitbtn.disabled = !(infoCard.headline.validity.valid && infoCard.cardNumber.validity.valid && infoCard.dateExpiry.validity.valid && infoCard.cvv.validity.valid)
     cleanbtn.disabled = false
 }
 
@@ -83,17 +90,20 @@ form.addEventListener('submit', e => {
     }
     if (index === null) {
         cardList.push(card)
-        toastObject.toastStyle = 'success'
-        toastObject.toastMessage = 'Tarjeta agregada con Exito!!'
+        Toast.fire({
+            icon: 'success',
+            title: 'Tarjeta agregada con Exito!!'
+        })
     } else {
         cardList[index] = card
-        toastObject.toastStyle = 'info'
-        toastObject.toastMessage = 'Tarjeta actualizada con Exito!!'
+        Toast.fire({
+            icon: 'success',
+            title: 'Tarjeta actualizada con Exito!!'
+        })
     }
     localStorage.setItem('cardList', JSON.stringify(cardList))
     reset()
     showCard()
-    showToast()
     infoCard.headline.focus()
 })
 
@@ -110,21 +120,47 @@ const editCard = i => {
 }
 
 const deleteCard = i => {
-    cardList.splice(i, 1)
-    localStorage.setItem('cardList', JSON.stringify(cardList))
-    showCard()
-    toastObject.toastStyle = 'danger'
-    toastObject.toastMessage = 'Tarjeta eliminada con Exito!!'
-    showToast()
+    Swal.fire({
+        title: '¿Eliminar Tarjeta?',
+        text: `Se eliminara la tarjeta de ${cardList[i].headline}`,
+        icon: 'warning',
+        confirmButtonText: 'Eliminar',
+        confirmButtonColor: '#3085d6',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#d33'
+    }).then(res => {
+        if (res.isConfirmed) {
+            Toast.fire({
+                icon: 'success',
+                title: 'Tarjeta eliminada con Exito!!'
+            })
+            cardList.splice(i, 1)
+            localStorage.setItem('cardList', JSON.stringify(cardList))
+            showCard()
+        }
+    })
 }
 
 erasebtn.addEventListener('click', () => {
-    if (erase) {
-        localStorage.clear()
-        cardList = []
-        showCard()
-        toastObject.toastStyle = 'danger'
-        toastObject.toastMessage = 'Se borraron todas las tarjetas con Exito!!'
-        showToast()
-    }
+    Swal.fire({
+        title: '¿Eliminar Tarjetas?',
+        text: 'Se eliminaran todas las tarjetas',
+        icon: 'warning',
+        confirmButtonText: 'Eliminar',
+        confirmButtonColor: '#3085d6',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#d33'
+    }).then(res => {
+        if (res.isConfirmed) {
+            Toast.fire({
+                icon: 'success',
+                title: 'Tarjetas actualizadas con Exito!!'
+            })
+            cardList = []
+            localStorage.clear()
+            showCard()
+        }
+    })
 })
